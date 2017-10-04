@@ -1,0 +1,91 @@
+var db = require('./connect.js');
+var inquirer = require('inquirer');
+require('console.table');
+
+db.connect(listOptions);
+
+function listOptions(){
+	inquirer.prompt([{
+    name: "option",
+    type: "list",
+    message: "Choose an operation:",
+    choices: [
+      "View Product Sales by Department",
+		  "Create New Department",
+    	"Quit"
+    ]
+	}])
+	.then(function(answer) {
+		switch (answer.option) {
+
+      case "View Product Sales by Department":
+      	return viewProductSales();
+
+		  case "Create New Department":
+		  	return addDepartment();
+	  
+	    default:
+	      return quit();
+	  }
+
+	});
+}
+
+function viewProductSales(){
+	var sql = 
+		"SELECT id, name, over_head_costs, product_costs, product_sales, " +
+		" (product_sales - product_costs - over_head_costs) total_profits " +
+		"FROM departments ORDER BY id";
+
+	db.link.query(sql, function(err, res) {
+		console.log("Store Departments:");
+		console.log("--------------------");
+
+		var deptTable = [['ID', 'Name', 'Overhead Costs', 'Product Costs', 'Product Sales', 'Total Profits']];
+		// get each product for sale
+		res.forEach(function(dept){
+			deptTable.push([
+				dept.id, 
+				dept.name, 
+				"$" + dept.over_head_costs,
+				"$" + dept.product_costs,
+				"$" + dept.product_sales, 
+				"$" + dept.total_profits
+			]);
+		});
+		console.table(deptTable[0], deptTable.slice(1));
+
+		listOptions();
+  });	
+}
+
+function addDepartment(){
+	inquirer.prompt([{
+    name: "name",
+    type: "input",
+    message: "Enter name of department you want to add:"
+  }, {
+  	name: "costs",
+  	type: "input",
+  	message: "Enter overhead costs for department:",
+  	validate: function(value) {
+  		return !Number.isInteger(value);
+  	}
+  }])
+  .then(function(answer) {
+    db.link.query("INSERT INTO departments SET ?",
+	    {
+	      name: answer.name,
+	      over_head_costs: answer.costs
+	    },
+	    function(err, res) {
+	      console.log("Department #" + res.insertId + " added to store");
+	      listOptions();
+	    }
+	  ); // insert department
+  }); // inquirer.prompt
+}
+
+function quit(){
+	db.disconnect();
+}
