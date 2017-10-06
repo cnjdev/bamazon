@@ -1,5 +1,6 @@
 var mysql = require('mysql');
 
+// create connection to db 
 var connection = mysql.createConnection({
   host: "localhost",
   port: 3306,
@@ -12,31 +13,23 @@ var connection = mysql.createConnection({
   database: "bamazon"
 });
 
-var connected = false;
-
 // connect to the mysql server and sql database
 function connect(callback){
   connection.connect(function(err) {
     if (err) throw err;
 
     // run the callback function after the connection is made
-    connected = true;
     if (callback != null) callback();
   });
 }
 
+// disconnect from db server
 function disconnect(){
   connection.end();
-  connected = false;
-}
-
-function isConnected(){
-  return connected;
 }
 
 module.exports = {
   connect: connect,
   disconnect: disconnect,
-  isConnected: isConnected,
   link: connection
 };
