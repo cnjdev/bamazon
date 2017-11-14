@@ -1,4 +1,4 @@
-### bamazon
+### nodestore
 
 There are three components to this application:
 

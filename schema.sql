@@ -1,9 +1,9 @@
 -- drop and recreate db
-DROP DATABASE IF EXISTS bamazon;
-CREATE DATABASE bamazon;
+DROP DATABASE IF EXISTS nodestore;
+CREATE DATABASE nodestore;
 
 -- switch to db
-USE bamazon;
+USE nodestore;
 
 -- id, name, overhead costs, product costs, product sales, keys 
 CREATE TABLE departments (
