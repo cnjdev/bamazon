@@ -1,21 +1,21 @@
 {
-  "name": "bamazon",
+  "name": "nodestore",
   "version": "1.0.0",
   "description": "",
-  "main": "connect.js",
+  "main": "customer.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/cnjdev/bamazon.git"
+    "url": "git+https://github.com/cnjdev/nodestore.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/cnjdev/bamazon/issues"
+    "url": "https://github.com/cnjdev/nodestore/issues"
   },
-  "homepage": "https://github.com/cnjdev/bamazon#readme",
+  "homepage": "https://github.com/cnjdev/nodestore#readme",
   "dependencies": {
     "console.table": "^0.9.1",
     "inquirer": "^3.3.0",
