@@ -45,7 +45,14 @@ function viewProductSales(){
 		console.log("Store Departments:");
 		console.log("--------------------");
 
-		var deptTable = [['ID', 'Name', 'Overhead Costs', 'Product Costs', 'Product Sales', 'Total Profits']];
+		let overHeadCosts = 0;
+		let productCosts = 0;
+		let productSales = 0;
+		let totalProfits = 0;
+		
+		// columns for table
+		var deptTable = [ ['ID', 'Name', 'Overhead Costs', 'Product Costs', 'Product Sales', 'Total Profits'] ];
+		
 		// for each dept show its report
 		res.forEach(function(dept){
 			deptTable.push([
@@ -56,7 +63,24 @@ function viewProductSales(){
 				"$" + dept.product_sales, 
 				"$" + dept.total_profits
 			]);
+
+			// add to totals
+			overHeadCosts += dept.over_head_costs;
+			productCosts += dept.product_costs;
+			productSales += dept.product_sales;
+			totalProfits += dept.total_profits;
 		});
+
+		// add row of totals
+		deptTable.push(['', '', '', '', '', '']);
+		deptTable.push(['', 
+			'Total', 
+			"$" + overHeadCosts, 
+			"$" + productCosts, 
+			"$" + productSales, 
+			"$" + totalProfits
+		]);
+
 		console.table(deptTable[0], deptTable.slice(1));
 
 		listOptions();
